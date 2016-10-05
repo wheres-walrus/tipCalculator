@@ -17,7 +17,7 @@ namespace TipCalculator
 
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent(); 
         }
 
         private void computeButton_Click(object sender, EventArgs e)
