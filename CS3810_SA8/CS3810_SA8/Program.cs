@@ -38,24 +38,28 @@ namespace CS3810_SA8
                     int tag = instructions[i] / (bytesPerRow * rowCount);
                     int offset = instructions[i] % bytesPerRow;
 
+                    // Print the common case.
                     if (j == 3)
                     {
                         if (cache.getData(row, tag)) // If there is a tag in the specified row that matches the provided tag
                         {
-                            Console.WriteLine("Accessing " + i + "(tag " + tag + ") : hit");
-                            cache.add(row, tag);
+                            Console.WriteLine("Accessing " + instructions[i] + "(tag " + tag + ") : hit");
                         }
                         else
                         {
-                            Console.WriteLine("Accessing " + i + "(tag " + tag + ") : miss");
-                            cache.replace(row, tag);
+                            Console.WriteLine("Accessing " + instructions[i] + "(tag " + tag + ") : miss");
+                            
+                            cache.miss(row, tag);
+
                         }
 
                     }
+                    
 
                 }
 
             }
+            Console.Read();
         }
     }
 
@@ -78,10 +82,11 @@ namespace CS3810_SA8
         internal bool getData(int row, int tag)
         {
             
-            foreach(CacheRow cr in cache)
+            for(int i = 0; i < cache.Length; i++)
             {
-                if (cr.tag == tag)
+                if (cache[i] != null && cache[i].tag == tag)
                     return true;
+            
             }
             return false;
         }
@@ -96,7 +101,7 @@ namespace CS3810_SA8
             int indexOfLowestLRU = -1; // This assumes there is alrady something in the cache
             for(int i = 0; i < cache.Length; i++)
             {
-                if (cache[i].LRU < lowestLRU) // Find the lowest LRU and its index.
+                if (cache[i] != null && cache[i].LRU < lowestLRU) // Find the lowest LRU and its index.
                 {
                     lowestLRU = cache[i].LRU;
                     indexOfLowestLRU = i;
@@ -117,7 +122,21 @@ namespace CS3810_SA8
                     cache[row] = new CacheRow(tag, ++currentLRU);
             }
             // If it gets to this point something is wrong
-            throw new InvalidOperationException();
+            //throw new InvalidOperationException();
+        }
+
+        internal void miss(int row, int tag)
+        {
+            bool hasEmptySpot = false;
+            for(int i = 0; i < cache.Length; i++)
+            {
+                if (cache[i] == null)
+                    hasEmptySpot = true;
+            }
+            if (hasEmptySpot)
+                add(row, tag);
+            else
+                replace(row, tag);
         }
 
 
@@ -128,13 +147,11 @@ namespace CS3810_SA8
         public class CacheRow
         {
             public int tag;
-            public bool valid;
             public int LRU;
 
             public CacheRow(int _tag, int _LRU)
             {
                 tag = _tag;
-                valid = _valid;
                 LRU = _LRU;
             }
 
