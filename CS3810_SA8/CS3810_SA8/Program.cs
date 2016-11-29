@@ -27,8 +27,7 @@ namespace CS3810_SA8
 
             //Number of times to iterate through the instructions
             int iterations = 5;
-
-
+            
             for (int j = 0; j < iterations; j++)
             {
                 for (int i = 0; i < instructions.Length; i++)
@@ -43,25 +42,22 @@ namespace CS3810_SA8
                     {
                         if (cache.getData(row, tag)) // If there is a tag in the specified row that matches the provided tag
                         {
-                            Console.WriteLine("Accessing " + instructions[i] + "(tag " + tag + ") : hit");
+                            Console.WriteLine("Accessing \t" + instructions[i] + "\t(tag \t" + tag + "\t) : \thit");
                         }
                         else
                         {
-                            Console.WriteLine("Accessing " + instructions[i] + "(tag " + tag + ") : miss");
-                            
+                            Console.WriteLine("Accessing \t" + instructions[i] + "\t(tag \t" + tag + "\t) : \tmiss");
                             cache.miss(row, tag);
-
                         }
-
-                    }
-                    
-
+                    }                   
                 }
-
             }
-            Console.Read();
+            Console.Read(); //Let the console stop so we can see the output.
         }
     }
+
+
+
 
     /// <summary>
     /// Represents a cache.
@@ -79,25 +75,47 @@ namespace CS3810_SA8
             currentLRU = 0;
         }
 
+        /// <summary>
+        /// Test if the row and tag match what's already in the cache.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="tag"></param>
+        /// <returns></returns>
         internal bool getData(int row, int tag)
         {
-            
             for(int i = 0; i < cache.Length; i++)
             {
                 if (cache[i] != null && cache[i].tag == tag)
                     return true;
-            
             }
             return false;
         }
 
-        internal void replace(int row, int tag)
+        /// <summary>
+        /// Gets called when there is a cache miss.
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="tag"></param>
+        public void miss(int row, int tag)
+        {
+            bool hasEmptySpot = false;
+            for (int i = 0; i < cache.Length; i++)
+            {
+                if (cache[i] == null)
+                    hasEmptySpot = true;
+            }
+            if (hasEmptySpot)
+                add(row, tag);
+            else
+                replace(row, tag);
+        }
+
+
+        private void replace(int row, int tag)
         {
             // No need for the row right now, don't even use it
-
-
-            int lowestLRU = currentLRU;
             
+            int lowestLRU = currentLRU;
             int indexOfLowestLRU = -1; // This assumes there is alrady something in the cache
             for(int i = 0; i < cache.Length; i++)
             {
@@ -113,7 +131,8 @@ namespace CS3810_SA8
             cache[indexOfLowestLRU].LRU = ++currentLRU;
         }
 
-        internal void add(int row, int tag)
+
+        private void add(int row, int tag)
         {
             // Find an index that is null, and place tag there
             for(int i = 0; i < cache.Length; i++)
@@ -124,22 +143,7 @@ namespace CS3810_SA8
             // If it gets to this point something is wrong
             //throw new InvalidOperationException();
         }
-
-        internal void miss(int row, int tag)
-        {
-            bool hasEmptySpot = false;
-            for(int i = 0; i < cache.Length; i++)
-            {
-                if (cache[i] == null)
-                    hasEmptySpot = true;
-            }
-            if (hasEmptySpot)
-                add(row, tag);
-            else
-                replace(row, tag);
-        }
-
-
+        
 
         /// <summary>
         /// Represents one row in a cache.
