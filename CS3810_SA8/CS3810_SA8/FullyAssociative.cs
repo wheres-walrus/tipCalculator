@@ -23,8 +23,8 @@ namespace CS3810_SA8
             int ways = 2;           // 2 ways
 
             // The instructions to be executed
-            int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140 };
-
+            //int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140 };
+            int[] instructions = { 16, 20, 24, 28, 32, 36, 60, 64, 56, 60, 64, 68, 56, 60, 64, 72, 76, 92, 96, 100, 104, 108, 112, 120, 124, 128, 144, 148 };
 
             // Make a new cache with the specified number of ways for each row, and put it in the array.
             // Make an array of FullyAssociative caches.
@@ -69,12 +69,12 @@ namespace CS3810_SA8
 
         private static void DirectMapped()
         {
-            int bytesPerBlock = 4; //4 byte block size
-            int rowCount = 16;      // 16 rows
+            int bytesPerBlock = 16;//4; //4 byte block size
+            int rowCount = 4;//16;      // 16 rows
 
             // The instructions to be executed
-            int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140 };
-
+            //int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140 };
+            int[] instructions = { 16, 20, 24, 28, 32, 36, 60, 64, 56, 60, 64, 68, 56, 60, 64, 72, 76, 92, 96, 100, 104, 108, 112, 120, 124, 128, 144, 148 };
 
             // Make a new cache with the specified number of rows.
             Cache cache = new Cache(rowCount);
@@ -114,8 +114,8 @@ namespace CS3810_SA8
             int rowCount = 8;    // 8 rows
 
             // The instructions to be executed
-            int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140};
-
+            //int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140};
+            int[] instructions = { 16, 20, 24, 28, 32, 36, 60, 64, 56, 60, 64, 68, 56, 60, 64, 72, 76, 92, 96, 100, 104, 108, 112, 120, 124, 128, 144, 148 };
 
             // Make a new cache with the specified number of rows.
             Cache cache = new Cache(rowCount);
