@@ -10,9 +10,9 @@ namespace CS3810_SA8
     {
         static void Main(string[] args)
         {
-            //FullyAssociative();
+            FullyAssociative();
             //DirectMapped();
-            SetAssociative();
+            //SetAssociative();
         }
 
 
@@ -22,9 +22,11 @@ namespace CS3810_SA8
             int rowCount = 4;       // 4 rows
             int ways = 2;           // 2 ways
 
+            Console.WriteLine("Set Associative cache, with " + bytesPerBlock + " bytes per block, " + rowCount + " rows, and " + ways + " ways.");
+
             // The instructions to be executed
-            //int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140 };
-            int[] instructions = { 16, 20, 24, 28, 32, 36, 60, 64, 56, 60, 64, 68, 56, 60, 64, 72, 76, 92, 96, 100, 104, 108, 112, 120, 124, 128, 144, 148 };
+            int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140 };
+            //int[] instructions = { 16, 20, 24, 28, 32, 36, 60, 64, 56, 60, 64, 68, 56, 60, 64, 72, 76, 92, 96, 100, 104, 108, 112, 120, 124, 128, 144, 148 };
 
             // Make a new cache with the specified number of ways for each row, and put it in the array.
             // Make an array of FullyAssociative caches.
@@ -69,12 +71,14 @@ namespace CS3810_SA8
 
         private static void DirectMapped()
         {
-            int bytesPerBlock = 16;//4; //4 byte block size
-            int rowCount = 4;//16;      // 16 rows
+            int bytesPerBlock = 4;  //4 byte block size
+            int rowCount = 16;      // 16 rows
+
+            Console.WriteLine("Direct Mapped cache, with " + bytesPerBlock + " bytes per block and " + rowCount + " rows.");
 
             // The instructions to be executed
-            //int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140 };
-            int[] instructions = { 16, 20, 24, 28, 32, 36, 60, 64, 56, 60, 64, 68, 56, 60, 64, 72, 76, 92, 96, 100, 104, 108, 112, 120, 124, 128, 144, 148 };
+            int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140 };
+            //int[] instructions = { 16, 20, 24, 28, 32, 36, 60, 64, 56, 60, 64, 68, 56, 60, 64, 72, 76, 92, 96, 100, 104, 108, 112, 120, 124, 128, 144, 148 };
 
             // Make a new cache with the specified number of rows.
             Cache cache = new Cache(rowCount);
@@ -110,12 +114,14 @@ namespace CS3810_SA8
 
         private static void FullyAssociative()
         {
-            int bytesPerBlock = 8; //8 byte block size
-            int rowCount = 8;    // 8 rows
+            int bytesPerBlock = 8;  //8 byte block size
+            int rowCount = 8;       // 8 rows
+
+            Console.WriteLine("Fully Associative cache, with " + bytesPerBlock + " bytes per block and " + rowCount + " rows.");
 
             // The instructions to be executed
-            //int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140};
-            int[] instructions = { 16, 20, 24, 28, 32, 36, 60, 64, 56, 60, 64, 68, 56, 60, 64, 72, 76, 92, 96, 100, 104, 108, 112, 120, 124, 128, 144, 148 };
+            int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140};
+            //int[] instructions = { 16, 20, 24, 28, 32, 36, 60, 64, 56, 60, 64, 68, 56, 60, 64, 72, 76, 92, 96, 100, 104, 108, 112, 120, 124, 128, 144, 148 };
 
             // Make a new cache with the specified number of rows.
             Cache cache = new Cache(rowCount);
@@ -145,6 +151,7 @@ namespace CS3810_SA8
                 }
                 Console.WriteLine("Iteration " + j + " completed.");
             }
+            cache.PrintCache();
             Console.Read(); //Let the console stop so we can see the output.
         }
     }
@@ -169,6 +176,15 @@ namespace CS3810_SA8
             for(int i = 0; i < cache.Length; i++)
             {
                 cache[i] = new CacheRow(-1, -1, false);
+            }
+        }
+
+        public void PrintCache()
+        {
+            Console.WriteLine("\tValid\tTag\tLRU");
+            for(int i = 0; i < cache.Length; i++)
+            {
+                Console.WriteLine(i + "\t" + cache[i].valid + "\t" + cache[i].tag + "\t" + cache[i].LRU);
             }
         }
 
