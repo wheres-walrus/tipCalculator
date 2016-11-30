@@ -11,13 +11,66 @@ namespace CS3810_SA8
         static void Main(string[] args)
         {
             //FullyAssociative();
-            DirectMapped();
+            //DirectMapped();
+            SetAssociative();
         }
+
+
+        private static void SetAssociative()
+        {
+            int bytesPerBlock = 8;  // 8 byte block size
+            int rowCount = 4;       // 4 rows
+            int ways = 2;           // 2 ways
+
+            // The instructions to be executed
+            int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140 };
+
+
+            // Make a new cache with the specified number of ways for each row, and put it in the array.
+            // Make an array of FullyAssociative caches.
+            Cache[] cache = new Cache[rowCount];
+            for(int k = 0; k < rowCount; k++)
+            {
+                cache[k] = new Cache(ways);     //Each cache should be a (way) row fully associative
+            }
+
+            //Number of times to iterate through the instructions
+            int iterations = 5;
+
+            for (int j = 0; j < iterations; j++)
+            {
+                for (int i = 0; i < instructions.Length; i++)
+                {
+                    int tag = instructions[i] / (bytesPerBlock * rowCount);
+                    int row = instructions[i] / bytesPerBlock % rowCount;
+
+
+                    Cache CurrentRowCache = cache[row];
+                    
+                    // Print the data
+                    if (true)
+                    {
+                        //Get the data from the row in each way, and store it. Compare if the tag is in them
+                        if (CurrentRowCache.GetDataFullyAssoc(tag)) // If there is a tag in the specified row that matches the provided tag
+                        {
+                            Console.WriteLine("Accessing instruction: \t" + instructions[i] + "\tTag: \t" + tag + "\tRow: \t" + row + "\tHit");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Accessing instruction: \t" + instructions[i] + "\tTag: \t" + tag + "\tRow: \t" + row + "\tMiss");
+                        }
+                    }
+                }
+                Console.WriteLine("Iteration " + j + " completed.");
+            }
+            Console.Read(); //Let the console stop so we can see the output.
+        }
+
 
         private static void DirectMapped()
         {
             int bytesPerBlock = 4; //4 byte block size
-            int rowCount =16;      // 16 rows
+            int rowCount = 16;      // 16 rows
 
             // The instructions to be executed
             int[] instructions = { 4, 8, 20, 24, 28, 36, 44, 20, 24, 28, 36, 40, 44, 68, 72, 92, 96, 100, 104, 108, 112, 100, 112, 116, 120, 128, 140 };
